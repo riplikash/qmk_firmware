@@ -370,31 +370,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
-#ifdef ENCODER_ENABLE
-
-bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (index == 0) {
-        if (clockwise) {
-            // For Ctrl+Tab
-            register_code(KC_LCTL); // Press Ctrl
-            tap_code(KC_TAB);       // Tap Tab
-            unregister_code(KC_LCTL); // Release Ctrl
-        } else {
-            // For Ctrl+Shift+Tab
-            register_code(KC_LCTL);   // Press Ctrl
-            register_code(KC_LSFT);   // Press Shift
-            tap_code(KC_TAB);         // Tap Tab
-            unregister_code(KC_LSFT); // Release Shift
-            unregister_code(KC_LCTL); // Release Ctrl
-        }
-    } else if (index == 1) {
-        if (clockwise) {
-            tap_code(KC_UP);
-        } else {
-            tap_code(KC_DOWN);
-        }
-    }
-    return true;
+#ifdef ENCODER_MAP_ENABLE
+const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
+    [0] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU),           ENCODER_CCW_CW(KC_UP, KC_DOWN) },
+    [1] = { ENCODER_CCW_CW(_______, _______),           ENCODER_CCW_CW(_______, _______) },
+    [2] = { ENCODER_CCW_CW(RGB_HUD, RGB_HUI),           ENCODER_CCW_CW(RGB_SAD, RGB_SAI) },
+    [3] = { ENCODER_CCW_CW(RGB_VAD, RGB_VAI),           ENCODER_CCW_CW(RGB_RMOD, RGB_MOD)},
+    [4] = { ENCODER_CCW_CW(RGB_VAD, RGB_VAI),           ENCODER_CCW_CW(RGB_RMOD, RGB_MOD)},
 }
-
 #endif
